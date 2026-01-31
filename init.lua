@@ -92,6 +92,7 @@ vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
+vim.g.python3_host_prog = vim.fn.expand '~/.venvs/nvim/bin/python'
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -354,6 +355,19 @@ require('lazy').setup({
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      {
+        'nvim-neo-tree/neo-tree.nvim',
+        branch = 'v3.x',
+        dependencies = {
+          'nvim-lua/plenary.nvim',
+          'nvim-tree/nvim-web-devicons',
+          'MunifTanjim/nui.nvim',
+        },
+        config = function()
+          require('neo-tree').setup {}
+          vim.keymap.set('n', '<leader>e', '<cmd>Neotree toggle<cr>', { desc = 'Toggle file tree' })
+        end,
+      },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -593,6 +607,7 @@ require('lazy').setup({
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --  See `:help lsp-config` for information about keys and how to configure
       local servers = {
+        -- pylsp = {},
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
@@ -616,6 +631,8 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'lua-language-server', -- Lua Language server
         'stylua', -- Used to format Lua code
+        'python-lsp-server',
+        -- 'pyright',
         -- You can add other tools here that you want Mason to install
       })
 
